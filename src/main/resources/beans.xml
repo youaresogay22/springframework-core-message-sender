@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+
+<!--    0214/annotation DI 실습-->
+<!--    <bean id="emailMessageSender" class="com.nhnacademy.edu.springframework.messagesender.impl.EmailMessageSender" scope="singleton" destroy-method="cleanup">-->
+<!--    </bean>-->
+
+<!--    <bean id="smsMessageSender" class="com.nhnacademy.edu.springframework.messagesender.impl.SmsMessageSender" scope="prototype" init-method="init">-->
+<!--    </bean>-->
+
+<!--    <bean id="messageSendService" class="com.nhnacademy.edu.springframework.messagesender.service.MessageSendService"/>-->
+
+<!--    <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor" />-->
+
+
+    <!--    0214/autowire DI 실습-->
+<!--    <bean id="messageSendService" class="com.nhnacademy.edu.springframework.messagesender.service.MessageSendService" autowire="byName">-->
+<!--    </bean>-->
+
+<!--    0214/setter DI 실습-->
+<!--    <bean id="messageSendService" class="com.nhnacademy.edu.springframework.messagesender.service.MessageSendService">-->
+<!--        <property name="messageSender" ref="smsMessageSender"/>-->
+<!--    </bean>-->
+
+<!--    0214/constructor DI 실습-->
+<!--    <bean id="messageSendService" class="com.nhnacademy.edu.springframework.messagesender.service.MessageSendService">-->
+<!--        <constructor-arg index="0" ref="smsMessageSender"/>-->
+<!--    </bean>-->
+
+</beans>
