@@ -1,11 +1,5 @@
 package com.nhnacademy.edu.springframework.messagesender.config;
 
-import com.nhnacademy.edu.springframework.messagesender.MessageSender;
-import com.nhnacademy.edu.springframework.messagesender.annotation.SMS;
-import com.nhnacademy.edu.springframework.messagesender.impl.EmailMessageSender;
-import com.nhnacademy.edu.springframework.messagesender.impl.SmsMessageSender;
-import com.nhnacademy.edu.springframework.messagesender.service.MessageSendService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 
