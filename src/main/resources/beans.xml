@@ -7,10 +7,10 @@
     <context:annotation-config/>
 
 <!--    0214/annotation DI 실습-->
-<!--    <bean id="emailMessageSender" class="com.nhnacademy.edu.springframework.messagesender.impl.EmailMessageSender" scope="singleton" destroy-method="cleanup">-->
+<!--    <bean id="emailMessageSender" class="com.nhnacademy.edu.springframework.messagesender.messagesender.impl.EmailMessageSender" scope="singleton" destroy-method="cleanup">-->
 <!--    </bean>-->
 
-<!--    <bean id="smsMessageSender" class="com.nhnacademy.edu.springframework.messagesender.impl.SmsMessageSender" scope="prototype" init-method="init">-->
+<!--    <bean id="smsMessageSender" class="com.nhnacademy.edu.springframework.messagesender.messagesender.impl.SmsMessageSender" scope="prototype" init-method="init">-->
 <!--    </bean>-->
 
 <!--    <bean id="messageSendService" class="com.nhnacademy.edu.springframework.messagesender.service.MessageSendService"/>-->

@@ -4,5 +4,44 @@
 * 의존성을 감소시키려는 이유: SOLID 원칙 중 DIP를 지키기 위해, 이를 위해 IOP, DI 이용
 * Spring DI를 사용하여 추상클래스의 구현체를 확정하지 않는 설계가 가능
 * xml > annotation > javaconfig으로 발전함.(길이가 길면 보기 불편함)
-* javaconfig: xml 파일로 bean생성하더라도 어차피 자바 코드로 변환되어 실행되므로
-== ㅁ
+* javaconfig: xml 파일로 bean생성하더라도 어차피 자바 코드로 변환되어 실행되므로 읽기 편하게 자바로 만들자.
+
+== javaconfig
+* bean 설정 시 타입과 bean name이 같은 클래스가 메서드 파라미터로 전달되는 경우 프레임워크 단위에서 알아서 주입해준다.
+[,java]
+----
+ @Bean
+    @Scope("singleton")
+    public ARepository aRepository() {
+        return new ARepositoryImpl();
+    }
+
+    @Bean
+    public AService aService() {
+        return new AService(aRepository());
+    }
+
+    @Bean
+    public BService bService() {
+        return new ASergice(aRepository());
+    }
+----
+* 여러 군데에서 같은 빈을 파라미터로 전달하는 경우 자바 특성상 new class를 전달해야 하지만 그렇게되면
+bean이 하나여야 하는 원칙에 위배되므로, CGLIB(프록시의 일종)기술을 통해 new class 대신 만들어진 bean을 전달한다.
+[,java]
+----
+@Configuration
+public class JavaConfig {
+    @Autowired
+    private ARepository aRepository;
+
+    @Bean
+    public AService aService() {
+        return new AService(aRepository);
+    }
+----
+* bean 선언에 필요한 객체를 선언하기 위해 객체 선언 필드에 @Autowired 어노테이션을 사용할 수 있다.
+* bean끼리 순환참조 하는 경우, 역시 프레임워크에서 알아서 처리해준다.
+
+== AOP
+* kek

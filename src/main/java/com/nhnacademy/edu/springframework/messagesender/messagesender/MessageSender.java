@@ -1,8 +1,8 @@
-package com.nhnacademy.edu.springframework.messagesender;
+package com.nhnacademy.edu.springframework.messagesender.messagesender;
 
 import com.nhnacademy.edu.springframework.messagesender.domain.User;
 import org.springframework.context.annotation.Bean;
 
 public interface MessageSender {
-    public void sendMesssage(User user, String message);
+    public void sendMessage(User user, String message);
 }
