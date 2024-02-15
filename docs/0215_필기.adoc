@@ -78,6 +78,14 @@ public class JavaConfig {
 ** 정리하면, Order값 숫자가 작을수록 우선 순위가 높아지고, 우선 적용되어서 더 안 쪽에서 감싸지는 proxy가 되어서 타겟 Object의 코드와 붙어있는 Apspect가 된다는 의미입니다.
 즉, Aspect 설정에서 order값의 숫자가 클 수록 target객체에서 더 멀어지는 바깥 쪽의 Proxy로 결합됩니다.
 ** [https://blog.benelog.net/2805903.html]
+* Advice AfterReturning 설정 시 예외 발생하면 advice method 실행안된다.(return 하지 못함)
+** 이의 반대로 AfterThrowing advice가 있음
+
+== spring framework testing
+* reflection test utils: 좀 불안한 것 같아서 mockito 사용
+
+== Spring Core utilities
+* 그냥 과제할때 참고.
 
 
 

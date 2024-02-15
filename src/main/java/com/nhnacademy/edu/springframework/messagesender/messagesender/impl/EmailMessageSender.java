@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 @Component
-@Primary
+//@Primary
 public class EmailMessageSender implements MessageSender {
     public EmailMessageSender() {
         System.out.println("email message created");
