@@ -5,7 +5,7 @@ import com.nhnacademy.edu.springframework.messagesender.domain.User;
 import com.nhnacademy.edu.springframework.messagesender.messagesender.MessageSender;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
-@Component @SMS @Aspect
+@Component @SMS
 public class SmsMessageSender implements MessageSender {
     public SmsMessageSender(){
         System.out.println("sms message created");

@@ -1,13 +1,16 @@
 = 0215필기
 
 == 복습
+
 * 의존성을 감소시키려는 이유: SOLID 원칙 중 DIP를 지키기 위해, 이를 위해 IOP, DI 이용
 * Spring DI를 사용하여 추상클래스의 구현체를 확정하지 않는 설계가 가능
 * xml > annotation > javaconfig으로 발전함.(길이가 길면 보기 불편함)
 * javaconfig: xml 파일로 bean생성하더라도 어차피 자바 코드로 변환되어 실행되므로 읽기 편하게 자바로 만들자.
 
 == javaconfig
+
 * bean 설정 시 타입과 bean name이 같은 클래스가 메서드 파라미터로 전달되는 경우 프레임워크 단위에서 알아서 주입해준다.
+
 [,java]
 ----
  @Bean
@@ -26,8 +29,9 @@
         return new ASergice(aRepository());
     }
 ----
-* 여러 군데에서 같은 빈을 파라미터로 전달하는 경우 자바 특성상 new class를 전달해야 하지만 그렇게되면
-bean이 하나여야 하는 원칙에 위배되므로, CGLIB(프록시의 일종)기술을 통해 new class 대신 만들어진 bean을 전달한다.
+
+* 여러 군데에서 같은 빈을 파라미터로 전달하는 경우 자바 특성상 new class를 전달해야 하지만 그렇게되면 bean이 하나여야 하는 원칙에 위배되므로, CGLIB(프록시의 일종)기술을 통해 new class 대신 만들어진 bean을 전달한다.
+
 [,java]
 ----
 @Configuration
@@ -40,15 +44,41 @@ public class JavaConfig {
         return new AService(aRepository);
     }
 ----
+
 * bean 선언에 필요한 객체를 선언하기 위해 객체 선언 필드에 @Autowired 어노테이션을 사용할 수 있다.
 * bean끼리 순환참조 하는 경우, 역시 프레임워크에서 알아서 처리해준다.
 * bean을 만드는 기준?
 ** util bean은, 다른 클래스와 의존성이 적거나 다른 패키지에서도 재사용할 수 있는, 즉 라이브러리같은 개념으로 생성하여 쓴다.
 * @Bean 은 쓰나요?
 ** 안 쓰는건 아닙니다.
-** 하위 구현체 모두 같은 bean이므로 주입도 되고, 바꿔써도 상관없다. 그렇지만 국룰을 지켜 안전한 프로그래밍을 합시다.
+** 하위 구현체 모두 같은 bean이므로 주입도 되고, 바꿔써도 상관없다.
+그렇지만 국룰을 지켜 안전한 프로그래밍을 합시다.
 * field injection 의 단점: 매우 편하지만 필드에 @Autowired 하나를 붙일때마다 의존관계 하나가 늘어나므로 많으면 좋지않음.
 ** 따라서 constructor injection 을 사용해야 함.
 
 == AOP
-*
+
+* 순차적 관점에서 벗어나 횡단관점과 주요관점을 분리함.
+* AOP 관점이 적용된 대표 예제: @transaction
+* joinpoint: 관념적으로 프로그래밍의 어떤 시점으로 pointcut의 후보이다.
+** 그러나 spring AOP interface상에서는 메서드 실행만 조인포인트이다.
+* AOP 구현을 위해 proxy pattern 을 사용한다.
+** *다만 이의 단점으로, 스프링 빈 내부에서 내부 함수 호출하는 경우 proxy 개입이 불가능해 Spring AOP 인터페이스로 타겟이 불가능하다.*
+* aspcctj가 컴파일 타임 Weaving하므로 좀더 빠르지만 대부분 Spring AOP(런타임 위빙) 사용
+** 또한 스프링 AOP는 오직 bean만을 대상으로 한다
+** 다만 둘의 문법은 같다, 스프링 AOP 라이브러리가 aspectj 문법을 채용함
+* Pointcut Designator
+** this: 대상 메소드를 감싼 프록시 개체를 advice 메서드의 파라미터에 바인딩하기(그러므로 advice내부에서 사용하기) 위함
+** args: 대상 메소드의 파라미터를 advice메서드의 파라미터에 바인딩하기 위함
+* @Order annotation on @Around
+** Aspect에서 우선순위가 높다는 의미는 '안쪽의 proxy가 된다.'는 의미입니다.
+즉, Proxy를 만들 때 Order값이 작은, 우선 순위가 높은 Aspect부터 먼저 Proxy를 만들고, 그 뒤에 다음 우선순위의 proxy들을 차례로 입혀갑니다.
+그러니 'before' 나 'Around’Advice라면 가장 바깥 쪽에 Proxy로 입혀진 , order값이 큰, 우선순위가 낮은 Aspect의 코드가 먼저 실행됩니다.
+
+** 정리하면, Order값 숫자가 작을수록 우선 순위가 높아지고, 우선 적용되어서 더 안 쪽에서 감싸지는 proxy가 되어서 타겟 Object의 코드와 붙어있는 Apspect가 된다는 의미입니다.
+즉, Aspect 설정에서 order값의 숫자가 클 수록 target객체에서 더 멀어지는 바깥 쪽의 Proxy로 결합됩니다.
+** [https://blog.benelog.net/2805903.html]
+
+
+
+

@@ -5,7 +5,7 @@ import com.nhnacademy.edu.springframework.messagesender.messagesender.MessageSen
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
-@Component @Primary @Aspect
+@Component @Primary
 public class EmailMessageSender implements MessageSender {
     public EmailMessageSender(){
         System.out.println("email message created");
