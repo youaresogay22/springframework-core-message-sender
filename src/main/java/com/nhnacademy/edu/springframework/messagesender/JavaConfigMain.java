@@ -15,8 +15,8 @@ public class JavaConfigMain {
 
             MessageSendService service = context.getBean("messageSendService", MessageSendService.class);
             service.doSendMessage(user,message);
+
             Object a = context.getBean("dbms");
-            a.getClass();
             System.out.println(a.getClass());
         }
 

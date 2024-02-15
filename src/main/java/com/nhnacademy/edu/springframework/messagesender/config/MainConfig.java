@@ -8,6 +8,7 @@ import java.util.Objects;
 @Configuration
 @ImportResource("classpath:/beans.xml")
 @ComponentScan(basePackages = {"com.nhnacademy.edu.springframework.messagesender"})
+@EnableAspectJAutoProxy
 public class MainConfig {
 //    @Bean @SMS
 //    public MessageSender smsMessageSender(){
