@@ -2,34 +2,44 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       https://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+       https://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <context:annotation-config/>
 
-<!--    0214/annotation DI 실습-->
-<!--    <bean id="emailMessageSender" class="com.nhnacademy.edu.springframework.messagesender.impl.EmailMessageSender" scope="singleton" destroy-method="cleanup">-->
-<!--    </bean>-->
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/>
 
-<!--    <bean id="smsMessageSender" class="com.nhnacademy.edu.springframework.messagesender.impl.SmsMessageSender" scope="prototype" init-method="init">-->
-<!--    </bean>-->
+    <bean id="doorayHookSender" class="com.nhn.dooray.client.DoorayHookSender">
+        <constructor-arg ref="restTemplate"/>
+        <constructor-arg
+                value="https://hook.dooray.com/services/3204376758577275363/3738651962004364986/HByzZBRuRu69-EUTsWR0tg"/>
+    </bean>
 
-<!--    <bean id="messageSendService" class="com.nhnacademy.edu.springframework.messagesender.service.MessageSendService"/>-->
+    <bean id="doorayMessageSender" class="com.nhnacademy.edu.springframework.messagesender.impl.DoorayMessageSender">
+        <constructor-arg ref="doorayHookSender"/>
+    </bean>
 
-<!--    <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor" />-->
+    <bean id="messageSendService" class="com.nhnacademy.edu.springframework.messagesender.service.MessageSendService">
+        <constructor-arg ref="doorayMessageSender"/>
+    </bean>
 
+    <bean id="loggingAspect" class="com.nhnacademy.edu.springframework.messagesender.aspect.LoggingAspect"/>
 
-    <!--    0214/autowire DI 실습-->
-<!--    <bean id="messageSendService" class="com.nhnacademy.edu.springframework.messagesender.service.MessageSendService" autowire="byName">-->
-<!--    </bean>-->
+    <aop:config>
+        <aop:aspect id="timeLoggingAspect" ref="loggingAspect">
+            <aop:around
+                    pointcut-ref="annotationDooray"
+                    method="logTime"/>
+        </aop:aspect>
+    </aop:config>
 
-<!--    0214/setter DI 실습-->
-<!--    <bean id="messageSendService" class="com.nhnacademy.edu.springframework.messagesender.service.MessageSendService">-->
-<!--        <property name="messageSender" ref="smsMessageSender"/>-->
-<!--    </bean>-->
-
-<!--    0214/constructor DI 실습-->
-<!--    <bean id="messageSendService" class="com.nhnacademy.edu.springframework.messagesender.service.MessageSendService">-->
-<!--        <constructor-arg index="0" ref="smsMessageSender"/>-->
-<!--    </bean>-->
-
+    <aop:config>
+        <aop:pointcut id="annotationDooray"
+                      expression="@annotation(com.nhnacademy.edu.springframework.messagesender.annotation.Dooray)"/>
+    </aop:config>
 </beans>
